@@ -1,9 +1,9 @@
 package com.misakana.starmisakana.compent;
 
 public class R<T> {
-    public Integer code;
-    public String msg;
-    public T data;
+    private Integer code;
+    private String msg;
+    private T data;
 
     public R(Integer code, String msg) {
         this.code = code;

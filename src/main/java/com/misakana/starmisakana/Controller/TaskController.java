@@ -5,12 +5,10 @@ import com.misakana.starmisakana.compent.PageResult;
 import com.misakana.starmisakana.compent.R;
 import com.misakana.starmisakana.pojo.Task;
 import com.misakana.starmisakana.service.TaskService;
+import com.misakana.starmisakana.vo.TaskVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,5 +38,13 @@ public class TaskController {
         /*PageResult pages = taskService.findPages(pageNo, pageSize);
         return R.success(pages);*/
     }
+    @PostMapping("/findPages2")
+    public R<Task> findPages2(@RequestBody TaskVo taskVo,Integer pageNo, Integer pageSize) {
+        PageResult pages = taskService.findPage(pageNo,pageSize);
 
+        //if(ObjectUtils.isE)
+        return R.success(pages);
+        /*PageResult pages = taskService.findPages(pageNo, pageSize,TaskVo);
+        return R.success(pages);*/
+    }
 }
