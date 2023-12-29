@@ -9,7 +9,6 @@ public class PageResult implements Serializable {
     private Integer PageNo;//当前页
     private Integer PageSize;//每页多少条数据
     private Integer TotalPage;//总页数
-
     private long total;//多少条数据
     private List rows;//当前页的数据
 
@@ -47,10 +46,9 @@ public class PageResult implements Serializable {
     }
 
 
-    public PageResult(Integer pageNo, Integer pageSize, Integer totalPage, long total, List rows) {
+    public PageResult(Integer pageNo, Integer pageSize, long total, List rows) {
         PageNo = pageNo;
         PageSize = pageSize;
-        TotalPage = totalPage;
         this.total = total;
         this.rows = rows;
     }

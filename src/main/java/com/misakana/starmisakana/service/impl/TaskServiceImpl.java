@@ -44,7 +44,8 @@ public class TaskServiceImpl implements TaskService {
         PageHelper.startPage(pageNo, pageSize);
         // 查询分页数据
         Page<Task> tasks = (Page<Task>)taskMapper.selectByExample(null);
-        return new PageResult(tasks.getTotal(), tasks.getResult());
+        System.out.println(tasks.getTotal());
+        return new PageResult(pageNo,pageSize,tasks.getTotal(), tasks.getResult());
 
     }
     @Override
@@ -71,7 +72,7 @@ public class TaskServiceImpl implements TaskService {
 
             criteria.andTypeidEqualTo(taskVo.getTypeid());
         }
-            criteria.andIsdeleteEqualTo(is_delete);
+        criteria.andIsdeleteEqualTo(is_delete);
         // 查询分页数据
         Page<Task> tasks = (Page<Task>)taskMapper.selectByExample(example);
         return new PageResult(tasks.getTotal(), tasks.getResult());

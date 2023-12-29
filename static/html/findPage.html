@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 和 Axios 示例</title>
+    <!-- 引入 Element UI 样式 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.15.6/lib/theme-chalk/index.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #4e54c8, #8f94fb);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #app {
+            width: 100%;
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .card-item {
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .card-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-content {
+            padding: 16px;
+        }
+
+        .card-item strong {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .card-item p {
+            margin: 8px 0;
+            color: #666;
+        }
+
+        .loading {
+            font-size: 24px;
+            color: #fff;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+
+<div id="app">
+    <div v-if="jsonData.length === 0" class="loading">加载中...</div>
+    <div v-else>
+        <div class="card-item" v-for="(item, index) in jsonData" :key="index" @click="showDetails(item)">
+            <div class="card-content">
+                <strong>任务名称：{{ item.name }}</strong>
+                <p>任务ID：{{ item.taskid }}</p>
+                <p>用户ID：{{ item.userid }}</p>
+                <p>发起时间：{{ item.lauchtime }}</p>
+                <p v-if="item.subtime">提交时间：{{ item.subtime }}</p>
+                <p v-if="item.state === 1">状态：已通过</p>
+                <p v-else-if="item.state === -1">状态：已拒绝</p>
+                <p v-else>状态：待处理</p>
+                <p v-if="item.isdelete === 1">状态：激活</p>
+                <p v-else>状态：已删除</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 引入 Vue、Axios、Element UI 脚本 -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/element-ui@2.15.6"></script>
+
+<script>
+
+    new Vue({
+        el: '#app',
+        data: {
+            jsonData: [],
+        },
+        mounted() {
+            this.showAnimation();
+            axios.post('http://127.0.0.1:8080/findPages2', {
+                taskVo: {
+                    // taskVo 相关的属性值
+                },
+                pageNo: 1,
+                pageSize: 10
+            })
+                .then(response => {
+                    this.jsonData = response.data.data;
+                    this.hideAnimation();
+                })
+                .catch(error => {
+                    console.error('数据获取失败:', error);
+                    this.hideAnimation();
+                });
+        },
+        methods: {
+            showAnimation() {
+                document.getElementById('app').style.opacity = '1';
+                document.getElementById('app').style.transform = 'translateY(0)';
+                document.querySelector('.loading').style.opacity = '1';
+                document.querySelector('.loading').style.transform = 'translateY(0)';
+            },
+            hideAnimation() {
+                document.querySelector('.loading').style.opacity = '0';
+                document.querySelector('.loading').style.transform = 'translateY(20px)';
+            },
+            showDetails(item) {
+                alert(`任务详情：${item.name}\n任务ID：${item.taskid}\n用户ID：${item.userid}\n发起时间：${item.lauchtime}`);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

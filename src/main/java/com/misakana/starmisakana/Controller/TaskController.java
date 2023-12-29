@@ -40,7 +40,7 @@ public class TaskController {
     }
     @PostMapping("/findPages2")
     public R<Task> findPages2(@RequestBody TaskVo taskVo,Integer pageNo, Integer pageSize) {
-        PageResult pages = taskService.findPage(pageNo,pageSize);
+        PageResult pages = taskService.findPage2(taskVo,pageNo,pageSize);
 
         //if(ObjectUtils.isE)
         return R.success(pages);
